@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-offset-lag-statsd
+  labels:
+    app: kafka-offset-lag-statsd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-offset-lag-statsd
+  template:
+    metadata:
+      labels:
+        app: kafka-offset-lag-statsd
+    spec:
+      containers:
+        - name: kafka-offset-lag-statsd
+          resources:
+            requests:
+              cpu: 2
+              memory: 3Gi
+            limits:
+              cpu: 4
+              memory: 10Gi
+          image: "<your-docker-image>"
+          imagePullPolicy: Always
+          env:
+          - name: KAFKA_BROKERS
+            value: "0.0.0.0,123.123.123.123"
+          - name: STATSD_HOST
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.hostIP
+          - name: DEBUG
+            value: "TRUE"
+          command:
+          - /kafka-offset-lag-statsd
