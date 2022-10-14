@@ -1,4 +1,4 @@
-FROM golang:1.13 AS build-env
+FROM public.ecr.aws/zomato/golang:1.13 AS build-env
 WORKDIR /go/src/kafka-offset-lag-statsd
 COPY . .
 RUN useradd -u 10001 kafkaoffsetlag
